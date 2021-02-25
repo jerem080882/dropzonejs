@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Ma page de test pour upload</title>
+        <link href="dist/min/dropzone.min.css" rel="stylesheet" type="text/css">
+        <script src="dist/min/dropzone.min.js"></script>
+    </head>
+    <body>
+        <h1>Upload de fichiers</h1>		 
+<!--        <form action="uploads.php" class="dropzone">
+            <input type="text" name="name" />
+            <div class="fallback">
+                <input name="file" type="file" multiple />
+            </div>
+        </form>-->
+
+        <!-- dropzone as a div in a form -->
+        <form id="form" action="uploads.php" method="POST">
+            <!-- standard form fields -->
+            <input type="text" name="name" />
+<!--            <input type="email" name="email" />-->
+            <!-- dropzone field -->
+            <div id="myDropzone" class="dropzone"></div>
+        </form>
+
+        <!-- submit button -->
+        <button id="dropzoneSubmit" class="uk-button uk-button-primary">Submit</button>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+        <script type="text/javascript">
+            // disable auto discover
+            Dropzone.autoDiscover = false;
+// init dropzone on id (form or div)
+            $(document).ready(function () {
+
+                var myDropzone = new Dropzone("#myDropzone", {
+                    url: "<?=$page->url?>",
+                    paramName: "file",
+                    autoProcessQueue: false,
+                    uploadMultiple: true, // uplaod files in a single request
+                    parallelUploads: 100, // use it with uploadMultiple
+                    maxFilesize: 100, // MB
+                    maxFiles: 10,
+                    acceptedFiles: ".jpg, .jpeg, .png, .gif, .pdf, .jfif",
+                    addRemoveLinks: true,
+                    // Language Strings
+                    dictFileTooBig: "Fichier trop lourd ({{filesize}}mb). Le poids max permis est {{maxFilesize}}mb",
+                    dictInvalidFileType: "Type de fichier invalide",
+                    dictCancelUpload: "Annuler",
+                    dictRemoveFile: "Supprimer",
+                    dictMaxFilesExceeded: "Seulement {{maxFiles}} fichiers sont permis",
+                    dictDefaultMessage: "Déposez les fichiers ici pour upload...",
+                });
+
+            });
+
+            Dropzone.options.myDropzone = {
+                // The setting up of the dropzone
+                init: function () {
+                    var myDropzone = this;
+
+                    // First change the button to actually tell Dropzone to process the queue.
+                    $("#dropzoneSubmit").on("click", function (e) {
+                        // Make sure that the form isn't actually being sent.
+                        e.preventDefault();
+                        e.stopPropagation();
+
+                        if (myDropzone.files != "") {
+                            myDropzone.processQueue();
+                        } else {
+                            $("#myDropzone").submit();
+                        }
+
+                    });
+
+                    // on add file
+                    this.on("addedfile", function (file) {
+                        console.log(file);
+                    });
+                    // on error
+                    this.on("error", function (file, response) {
+                        // console.log(response);
+                    });
+                    // on start
+                    this.on("sendingmultiple", function (file) {
+                        console.log(file);
+                    });
+                    // on success
+                    this.on("successmultiple", function (file) {
+                        // submit form
+                        $("#form").submit();
+                    });
+                }
+            };
+
+        </script>		
+    </body>
+</html>
