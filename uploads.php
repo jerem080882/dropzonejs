@@ -1,34 +1,45 @@
 <?php
 
+//post_max_size = 210M
+//upload_max_filesize = 200M
+//max_file_uploads = 20
+
 $ds = "/"; 
 
-$storeFolder = 'uploads'; 
-
-
+//répertoire d'uploads
+$storeFolder = 'uploads';
+$pdfFolder = $storeFolder.$ds.'pdf';
+$csvFolder = $storeFolder.$ds.'csv';
+$xmlFolder = $storeFolder.$ds.'xml';
+$bulkFolder = $storeFolder.$ds.'bulk';
 
 if (!empty($_FILES)) {
     
     foreach($_FILES['file']['tmp_name'] as $key => $value) {
+        //extension du fichier d'origine
+        $ext = strtolower(pathinfo( $_FILES['file']['name'][$key], PATHINFO_EXTENSION));
+        
+        //fichier temporaire
         $tempFile = $_FILES['file']['tmp_name'][$key];
-        $targetFile =  $storeFolder. $_FILES['file']['name'][$key];
-        move_uploaded_file($tempFile,$targetFile);
+        
+        //deplacement suivant l'extension
+        if ($ext == 'pdf') {
+            $targetFile =  dirname(__FILE__) . $ds .$pdfFolder.$ds.$_FILES['file']['name'][$key];
+            move_uploaded_file($tempFile,$targetFile);
+        } else if ($ext == 'csv' || $ext == 'xls') {
+            $targetFile =  dirname(__FILE__) . $ds .$csvFolder.$ds.$_FILES['file']['name'][$key];
+            move_uploaded_file($tempFile,$targetFile);
+        } else if ($ext == 'xml') {
+            $targetFile =  dirname(__FILE__) . $ds .$xmlFolder.$ds.$_FILES['file']['name'][$key];
+            move_uploaded_file($tempFile,$targetFile);
+        } else if ($ext == 'bulk') {
+            $targetFile =  dirname(__FILE__) . $ds .$bulkFolder.$ds.$_FILES['file']['name'][$key];
+            move_uploaded_file($tempFile,$targetFile);
+        } else {
+            $targetFile =  dirname(__FILE__) . $ds .$storeFolder.$ds.$_FILES['file']['name'][$key];
+            move_uploaded_file($tempFile,$targetFile);
+        }
     }
     
-    
-    
-//    //extension du fihier d'origine
-//    $ext = strtolower(pathinfo( $_FILES['file']['name'], PATHINFO_EXTENSION));
-//     
-//    $tempFile = $_FILES['file']['tmp_name'];          //3 
-//   
-//    //filtre pour les pdf
-//    if ($ext == 'pdf' || TRUE) {
-//
-//        $targetPath = dirname(__FILE__) . $ds . $storeFolder . $ds;
-//
-//        $targetFile = $targetPath . $_FILES['file']['name'];
-//
-//        move_uploaded_file($tempFile, $targetFile); 
-//    }
 }
 ?>  

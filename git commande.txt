@@ -1,0 +1,77 @@
+;création d'un repo sur github
+curl -X POST -H "Accept: application/vnd.github.v3+json" -u jerem080882:a1083e6c5aca1eb5c10df70845a452b752ff53ab  https://api.github.com/user/repos -d '{\"name\":\"testcreationPrivate\",\"private\":true}'
+curl -X POST -H "Accept: application/vnd.github.v3+json" -u jerem080882:a1083e6c5aca1eb5c10df70845a452b752ff53ab  https://api.github.com/user/repos -d '{\"name\":\"symfony_base\",\"private\":true}'
+curl -X POST -H "Accept: application/vnd.github.v3+json" -u jerem080882:a1083e6c5aca1eb5c10df70845a452b752ff53ab  https://api.github.com/user/repos -d '{\"name\":\"dropezonejs\",\"private\":true}'
+a1083e6c5aca1eb5c10df70845a452b752ff53ab : personal access tokens
+
+; pour creer un nouveau projet git dans un dossier local
+git init
+
+; mettre en place les variables globales
+git config --global user.name "Your Name"
+git config --global user.email "user@domain.com"
+git config --global user.name jerem080882
+git config --global user.email pcddeps@gmail.com
+
+
+git config --global color.diff auto
+git config --global color.status auto
+git config --global color.branch auto
+
+git config --list
+
+;ajouter toutes les sources avant commit
+git add .
+; annuler un fichier apres un ADD
+git reset HEAD -- fichier_a_supprimer
+; annule tout en local
+git reset --hard head
+
+; pousser vers le depot local
+git commit -m "Add Symfony profiler"
+
+;renomme la branche locale
+git branch -M main
+
+;pour synchroniser un repo local avec un repo distant (ici name = guestbook, c'est le nom de la connexion au remote repo)
+git remote add guestbook https://github.com/jerem080882/guestbook.git
+git remote add testdepois https://github.com/jerem080882/test.git
+git remote add symfonybase https://github.com/jerem080882/symfony_base.git
+git remote add dropzone https://github.com/jerem080882/dropzonejs.git
+
+;pour pousser le local vers le distant
+git push -u guestbook main
+git push -u testdepois main
+git push -u symfonybase main
+git push -u dropzone main
+
+;Permet de répertorier vos connexions distantes avec d'autres dépôts.
+;elle inclut l'URL de chaque connexion.
+git remote -v
+
+
+;récupérer le projet en local vers un repertoire
+git clone https://github.com/jerem080882/guestbook.git guestbookTuto
+git clone https://github.com/jerem080882/symfony_base.git symfonybase
+git clone https://github.com/jerem080882/dropzonejs.git dropzone
+
+
+;Dès que vous voulez faire une opération qui concerne le dépôt distant (publication ou récupération d'informations), commencez toujours par
+git fetch
+
+;Si vous avez modifié plusieurs fichiers mais que vous n’avez pas encore envoyé le commit et que vous voulez restaurer un fichier tel qu’il était au dernier commit, utilisez  git checkout  :
+git checkout nomfichier
+;git checkout  est utilisé pour changer de branche mais aussi pour restaurer un fichier tel qu’il était lors du dernier commit. La commande a donc un double usage
+git checkout master
+
+;visualiser les logs
+git log
+
+;télécharge les nouveautés depuis le serveur :
+git pull
+
+; voir la liste des fichiers qui ont changé
+git status
+; voir les différences
+git diff
+
